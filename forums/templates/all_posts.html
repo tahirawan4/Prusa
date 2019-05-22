@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="forums">
+            <h5>Forums</h5>
+            {#            {% for category in forum_categories %}#}
+            <div class="table-responsive singleForum">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Answers</th>
+                        <th>Posted by</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for post in posts %}
+                        <tr>
+                            <td>
+                                <div class="communityF"><span class="chatIcon"></span>
+                                    <p><a href="{% url 'post-details' slug=post.slug %}">{{ post.title }}</a></p></div>
+                            </td>
+                            <td>{{ post.topicanswer_set.all.count }}</td>
+                            <td>
+
+                                <div class="lastpost"><span class="imgWrap"><img
+                                        src="{% static 'images/dp1.jpg' %}"
+                                        width="56" height="56"
+                                        alt="dp"></span>
+                                    <p>{{ post.user.first_name }}
+                                        <span>{{ post.created_at|date }} | {{ post.created_at|time }}</span>
+                                    </p></div>
+
+
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            {#            {% endfor %}#}
+        </div>
+    </div>
+{% endblock %}

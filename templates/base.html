@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calling System</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/allstyles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="home">
+<header class="header">
+    <div class="container">
+        <div class="top-bar">
+            <div class="headNav">
+                <ul>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+
+                    {% else %}
+                        <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                    {% endif %}
+
+
+                    <li><a href="{% url 'posts' %}">Blog</a></li>
+                    <li><a href="{% url 'forums' %}">Forum</a></li>
+                    <li><a href="#">My Account</a></li>
+                </ul>
+
+                {% with totail_items=cart|length %}
+                    {% if cart|length > 0 %}
+
+                        {#                        <a href="{% url "cart:cart_detail" %}" style="color: #ffffff">#}
+                        {#                            {{ totail_items }} item {{ totail_items|pluralize }}, Kshs. {{ cart.get_total_price }}#}
+                        {#                        </a>#}
+
+                        <div class="cart">
+                            <a href="{% url "cart:cart_detail" %}" class="flaticon-shopping-cart"></a>
+                            <div class="notify">{{ totail_items }}</div>
+                        </div>
+                    {% else %}
+                        <div class="cart">
+                            <a href="{% url "cart:cart_detail" %}" class="flaticon-shopping-cart"></a>
+                            <div class="notify">0</div>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+
+
+            </div>
+            <div class="headTop">
+                <a href="{% url 'home' %}" class="logo"><img src="{% static 'images/logo.jpg' %}" height="130"
+                                                             width="234" alt="logo"></a>
+                <div class="headTopDrop">
+                    <select class="form-control categories" id="sel1" class="form-control">
+                        <option hidden="">All Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat.get_absolute_url }}"
+                                    {% if category and cat.id == category.id %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- <div class="headTopSearch"> -->
+                <form action="{% url 'products:product_list' %}" method="get">
+                    <div class="searchWrap">
+                        <!--  <div class="search"> -->
+
+                        <input type="text" name="search" placeholder="Search products by SKU or name"
+                               class="form-control" {% if search %}value="{{ search }}" {% endif %}>
+                        <!-- </div> -->
+                        <button type="submit" class="btn btn-primary">Search</button>
+
+                    </div>
+                </form>
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <h6>Store Logo</h6>
+                <p>In hac habitasse platea dictumst. Vivamus adipiscing fermentum quam volutpat aliquam. Integer et elit
+                    eget elit facilisis tristique. Nam vel iaculis mauris.</p>
+                <div class="socialIcons">
+                    <a href="#" class="flaticon-facebook-logo-button"></a>
+                    <a href="#" class="flaticon-twitter-logo-button"></a>
+                    <a href="#" class="flaticon-youtube-logotype"></a>
+                </div>
+            </div>
+            <div class="col-md-2 fooNav ">
+                <h6 class="fooTitle">Site Map </h6>
+                <ul class="fooUl">
+                    <li><a href="#">About us</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Jobs</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-md-2 ">
+                <h6 class="fooTitle">Other Links</h6>
+                <ul class="fooUl">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Downloads</a></li>
+                    <li><a href="#">Research</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 ">
+                <div class="news">
+                    <h6 class="fooTitle newsTitle">Sign Up To Our Newsletter</h6>
+                    <input type="text" name="" style="background: #e2e2e2; border-color:#e2e2e2;"
+                           placeholder="Enter email address" class="form-control">
+                    <button class="btn btn-secondary subBtn">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/plugins.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/system.js' %}"></script>
+
+<script>
+
+
+    $('select.categories').click(function () {
+        var open = $(this).data("isopen");
+        if (open) {
+            window.location.href = $(this).val()
+        }
+        //set isopen to opposite so next time when use clicked select box
+        //it wont trigger this event
+        $(this).data("isopen", !open);
+    });
+</script>
+</body>
+
+</html>
+
+
+
+
+

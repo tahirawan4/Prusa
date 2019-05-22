@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="callingSystem">
+        <div class="banner">
+            <img src="{% static 'images/banner.jpg' %}" width="1910" height="484" alt="banner">
+            <div class="bannerCont">
+                <h3>{{ post.title }}</h3>
+                <div class="bannerInnerCont">
+                    <div class="imgWrap">
+                        <img src="{% static 'images/dp.jpg' %}" alt="dp" height="" width=""></div>
+                    <p> by {{ post.user.first_name }} | {{ post.created_at|date }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+    <div class="dataSection">
+        <img src="{{ post.main_image.url }}" height="" width="" alt="data">
+        {{ post.content|safe }}
+    </div>
+    <div class="comments">
+        <h6>{{ post.blogcomment_set.all.count }} Comments</h6>
+        {% for comment in post.blogcomment_set.all %}
+            <div class="singleCommentWrap">
+                <div class="singleComment">
+                    <div class="imgWrap">
+                        <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+                    </div>
+                    <div class="comContent">
+                        <p class="time">{{ comment.created_at|date }} | {{ comment.created_at|time }}</p>
+                        <p class="name">{{ comment.user.first_name }} {{ comment.user.last_name }} says</p>
+                        <p>{{ comment.comment }}</p>
+                    </div>
+
+                </div>
+
+            </div>
+        {% endfor %}
+
+
+        <div class="leaveComment">
+            <h6>Leave a comment</h6>
+            <form method="post" action="{% url 'post-comment' slug=post.slug %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea placeholder="Comment" name='comment' class="form-control"></textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary">Post a Comment</button>
+            </form>
+
+
+        </div>
+    </div>
+{% endblock %}
+

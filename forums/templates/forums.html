@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="forums">
+            <h5>Forums</h5>
+            {% for category in forum_categories %}
+                <div class="table-responsive singleForum">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Community</th>
+                            <th>Topics</th>
+                            <th>Posts</th>
+                            <th>Last Post &nbsp;&nbsp;<a href="{% url 'forum-details' slug=category.slug %}" class="btn btn-primary">All Topics</a></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for topic in category.topic_set.all|slice:"0:3" %}
+                            <tr>
+                                <td>
+                                    <div class="communityF"><span class="chatIcon"></span>
+                                        <p><a href="{% url 'forum-posts' slug=topic.slug %}" class="btn btn-default">{{ topic.title }}</a></p></div>
+                                </td>
+                                <td>{{ category.topic_set.all.count }}</td>
+                                <td>{{ topic.topicposts_set.all.count }}</td>
+                                <td>
+                                    {% if topic.get_last_post %}
+                                        <div class="lastpost"><span class="imgWrap"><img
+                                                src="{% static 'images/dp1.jpg' %}"
+                                                width="56" height="56"
+                                                alt="dp"></span>
+                                            <p>{{ topic.get_last_post.user.first_name }}
+                                                <span>{{ topic.get_last_post.created_at|date }} | {{ topic.get_last_post.created_at|time }}</span>
+                                            </p></div>
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

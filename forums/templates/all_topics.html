@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="forums">
+            <h5>Forums</h5>
+            {#            {% for category in forum_categories %}#}
+            <div class="table-responsive singleForum">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Community</th>
+                        <th>Posts</th>
+                        <th>Last Post</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for topic in topics %}
+                        <tr>
+                            <td>
+                                <div class="communityF"><span class="chatIcon"></span>
+                                    <p>{{ topic.title }}</p></div>
+                            </td>
+                            <td>{{ topic.topicposts_set.all.count }}</td>
+                            <td>
+                                {% if topic.get_last_post %}
+                                    <div class="lastpost"><span class="imgWrap"><img
+                                            src="{% static 'images/dp1.jpg' %}"
+                                            width="56" height="56"
+                                            alt="dp"></span>
+                                        <p>{{ topic.get_last_post.user.first_name }}
+                                            <span>{{ topic.get_last_post.created_at|date }} | {{ topic.get_last_post.created_at|time }}</span>
+                                        </p></div>
+                                {% endif %}
+
+                            </td>
+                            <td><a href="{% url 'forum-posts' slug=topic.slug %}" class="btn btn-primary">All Posts</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            {#            {% endfor %}#}
+        </div>
+    </div>
+{% endblock %}

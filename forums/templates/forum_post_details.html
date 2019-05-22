@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="communityPage">
+            <h5>Community</h5>
+            <div class="que">
+                <div class="commWrap ">
+                    <div class="community">
+                        <div class="imgWrap">
+                            <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+                        </div>
+                        <div class="commCont">
+                            <h6>{{ post.title }}</h6>
+                            <p class="time">Asked by <span class="name">{{ post.user.first_name }}</span>
+                                on {{ post.created_at|date }} <span
+                                        class="post"> {{ post.user.topicposts_set.all.count }} posts</span></p>
+                            <p>{{ post.content }}</p>
+                            <div class="keywords">
+                                {% for tag in post.tags.all %}
+                                    <span>{{ tag.title }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <a href="#" class="reply btn btn-secondary"><i class="fa fa-edit"></i>Reply</a>
+                    </div>
+                </div>
+            </div>
+            <span class="answer">5 Answers</span>
+            <div class="commWrap ans">
+                <div class="community">
+                    <div class="left">
+                        <div class="imgWrap">
+                            <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+                        </div>
+                        <button class="link share"><i class="fa fa-share-square"></i>Share</button>
+                        <button class="link improve"><i class="fa fa-wrench"></i>Improve</button>
+                    </div>
+                    <div class="commCont">
+                        <h6>Help with Camera zoom visual aid for the visually impaired</h6>
+                        <p class="time">Asked by <span class="name">Monika Dykas</span> on Jan 18, 2019 <span
+                                class="post"> 25 posts</span></p>
+                        <p>I am currently working on a school project where i am making a visual aid for people with
+                            visual impairments with the raspberry pi. I have done lots of research, but unfortunately
+                            cannot find a way to do what i want to do. I am new to the Pi and was wondering if there was
+                            a way(and if so, how) to make a remote controller for the Point Gray Chameleon3 camera(if
+                            this camera doesn't work then can you tell me which one will) so when i press a button it
+                            zooms in with optical zoom, and press another button and it zooms out. If you could help me
+                            with this, i would very much appreciate it.</p>
+                    </div>
+                    <div class="right">
+                        <a href="#" class="reply btn btn-secondary"><i class="fa fa-edit"></i>Reply</a>
+                        <div class="slideContArrows">
+                            <button class="btn fa fa-caret-up"></button>
+                            <p>50</p>
+                            <button class="btn fa fa-caret-down"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="community">
+                    <div class="imgWrap">
+                        <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+                    </div>
+                    <div class="commCont">
+                        <p class="time">Asked by <span class="name">Monika Dykas</span> on Jan 18, 2019 </p>
+                        <p>I am currently working on a school project where i am making a visual aid for people with
+                            visual impairments with the raspberry pi. I have done lots of research, but unfortunately
+                            cannot find a way to do what i want to do. </p>
+                    </div>
+                    <a href="#" class="addCom">Add Comment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

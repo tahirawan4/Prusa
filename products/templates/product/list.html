@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <main class="main">
+        <div class="container">
+            <div class="productspage">
+                <div class="row">
+                    <div class="col-lg-3 col-md-4">
+                        <div class="proLeft">
+                            <a href="#" class="todaySearch">
+                                <h6>Today's Offer</h6>
+                                <img src="images/product-w.jpg" alt="product" width="" height="">
+                                <h5>Raspberry Pi3 Model B+ </h5>
+                                <p class="offer">30% OFF</p>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9 col-md-8">
+                        <div class="proRight">
+                            <div class="proTitle">
+                            {% if search %}
+                                <h6>Search: {{ search }}</h6>
+                            {% endif %}
+                                {% if category %}
+                                    <h6> Category: {{ category.name }}</h6>
+                                {% endif %}
+
+                                {#                                <div class="pagination">#}
+                                {#                                    <p>Showing 60 of 392</p>#}
+                                {#                                    <a href="#" class="arrow flaticon-arrow-angle-pointing-to-left"></a>#}
+                                {#                                    <a href="#" class="arrow  flaticon-right-arrow-angle"></a>#}
+                                {#                                </div>#}
+                            </div>
+                            {#                            <p class="sortP"><span>Sort:</span> By Popularity</p>#}
+                            <hr>
+                            <div class="productsList">
+                                <div class="row">
+                                    {% for product in products %}
+                                        <div class="col-lg-4 col-sm-6">
+                                            <a href="#" class="products">
+                                                <img src="{{ product.image.url }}" width="262" height="173"
+                                                     alt="product">
+                                                <div class="slideCont">
+                                                    <h6>{{ product.name }}</h6>
+                                                    <p>{{ product.description|truncatechars:80 }}</p>
+                                                    <p class="price">${{ product.price }}</p>
+                                                    <div class="rating">
+                                                        {% for i in range %}
+                                                            {% if forloop.counter <= product.average_ratings %}
+                                                                <i class="star flaticon-star-1"></i>
+                                                            {% else %}
+                                                                <i class="star flaticon-star"></i>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <p class="starCount">({{ product.rating_set.all.count }})</p>
+                                                    </div>
+                                                </div>
+
+                                                {% if product.available %}
+                                                    <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <div hidden>
+                                                            {{ cart_product_form|crispy }}
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Add to cart
+                                                        </button>
+                                                    </form>
+
+                                                {% else %}
+                                                    <button type="button" class="btn btn-primary">Out of Stock</button>
+                                                {% endif %}
+
+                                                <span class="search"></span>
+                                            </a>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+{% endblock %}
+

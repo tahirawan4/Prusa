@@ -1,0 +1,118 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="headSlider">
+        <div class="slide">
+            <img src="{% static 'images/slider.jpg' %}" width="1910" height="484" alt="slider">
+            <div class="slideContent">
+                <h2>Raspberry Pi3 Model B+</h2>
+                <p>1.4GHz 64-bit quad-core processor, dual-band wireless LAN, Bluetooth 4.2/BLE, faster Ethernet, and
+                    Power-over-Ethernet support (with separate PoE HAT)</p>
+                <button type="submit" class="btn btn-primary">Buy Now</button>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="{% static 'images/slider.jpg' %}" width="1910" height="484" alt="slider">
+            <div class="slideContent">
+                <h2>Raspberry Pi3 Model B+</h2>
+                <p>1.4GHz 64-bit quad-core processor, dual-band wireless LAN, Bluetooth 4.2/BLE, faster Ethernet, and
+                    Power-over-Ethernet support (with separate PoE HAT)</p>
+                <button type="submit" class="btn btn-primary">Buy Now</button>
+            </div>
+        </div>
+        <div class="slide">
+            <img src="{% static 'images/slider.jpg' %}" width="1910" height="484" alt="slider">
+            <div class="slideContent">
+                <h2>Raspberry Pi3 Model B+</h2>
+                <p>1.4GHz 64-bit quad-core processor, dual-band wireless LAN, Bluetooth 4.2/BLE, faster Ethernet, and
+                    Power-over-Ethernet support (with separate PoE HAT)</p>
+                <button type="submit" class="btn btn-primary">Buy Now</button>
+            </div>
+        </div>
+    </div>
+    <section class="bestProducts">
+        <h5 class="title">Best Selling Products</h5>
+        <div class="container">
+            <div class="proSlider">
+
+                {% for product in products %}
+                    <div class="slide ">
+                        <a href="{{ product.get_absolute_url }}" class="products">
+                            <img src="{{ product.image.url }}" width="262" height="173" alt="product">
+                            <div class="slideCont">
+                                <h6>{{ product.name }}</h6>
+                                <p>{{ product.description|truncatechars:80 }}</p>
+                                <p class="price">${{ product.price }}</p>
+                                <div class="rating">
+                                    {% for i in range %}
+                                        {% if forloop.counter <= product.average_ratings %}
+                                            <i class="star flaticon-star-1"></i>
+                                        {% else %}
+                                            <i class="star flaticon-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <p class="starCount">({{ product.rating_set.all.count }})</p>
+                                </div>
+                            </div>
+                            {% if product.available %}
+                                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                    {% csrf_token %}
+                                    <div hidden>
+                                        {{ cart_product_form|crispy }}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Add to cart</button>
+                                </form>
+
+                            {% else %}
+                                <button type="button" class="btn btn-primary">Out of Stock</button>
+                            {% endif %}
+
+                            <span class="search"></span>
+                        </a>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+    <section class="latestBlogs">
+        <h5 class="title">Latest Blogs and Forums</h5>
+        <div class="container">
+            <div class="row">
+                {% for blog in blogs %}
+                    {% if forloop.counter == 1 %}
+                        <div class="col-md-6">
+                            <div class="blog blogLeft">
+                                <img src="{{ blog.main_image.url }}" height="482" width="868" alt="blog">
+                                <h6><a href="{% url 'blog-post-details' slug=blog.slug %}" style="color: white;"> {{ blog.title }}</a></h6>
+                            </div>
+                        </div>
+
+
+                    {% else %}
+                        <div class="col-md-6">
+                            <div class="blog blogRight">
+                                <img src="{{ blog.main_image.url }}" height="150" width="868" alt="blog">
+                                <h6><a href="{% url 'blog-post-details' slug=blog.slug %}" style="color: white;">{{ blog.title }}</a></h6>
+                            </div>
+
+                            <div class="blog blogRight">
+                                <img src="{{ blog.main_image.url }}" height="150" width="868" alt="blog">
+                                <h6><a href="{% url 'blog-post-details' slug=blog.slug %}" style="color: white;">{{ blog.title }}</a></h6>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+    /*
+    Flaticon icon font: Flaticon
+    Creation date: 21/03/2019 06:00
+    */
+
+    @font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.eot");
+  src: url("./Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.woff2") format("woff2"),
+       url("./Flaticon.woff") format("woff"),
+       url("./Flaticon.ttf") format("truetype"),
+       url("./Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+    .fi:before{
+        display: inline-block;
+  font-family: "Flaticon";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+    }
+
+    .flaticon-shopping-cart:before { content: "\f100"; }
+.flaticon-arrow-angle-pointing-to-left:before { content: "\f101"; }
+.flaticon-right-arrow-angle:before { content: "\f102"; }
+.flaticon-musica-searcher:before { content: "\f103"; }
+.flaticon-star-1:before { content: "\f104"; }
+.flaticon-star:before { content: "\f105"; }
+.flaticon-youtube-logotype:before { content: "\f106"; }
+.flaticon-facebook-logo-button:before { content: "\f107"; }
+.flaticon-twitter-logo-button:before { content: "\f108"; }
+.flaticon-sort-down:before { content: "\f109"; }
+.flaticon-comment-white-oval-bubble:before { content: "\f10a"; }
+.flaticon-github:before { content: "\f10b"; }
+.flaticon-facebook-letter-logo:before { content: "\f10c"; }
+.flaticon-facebook-logo-in-circular-button-outlined-social-symbol:before { content: "\f10d"; }
+.flaticon-twitter-circular-button:before { content: "\f10e"; }
+.flaticon-share:before { content: "\f10f"; }
+.flaticon-twitter-logo-silhouette:before { content: "\f110"; }
+.flaticon-envelope:before { content: "\f111"; }
+.flaticon-sold-real-estate-hanging-signal:before { content: "\f112"; }
+.flaticon-like:before { content: "\f113"; }
+.flaticon-eye:before { content: "\f114"; }
+    
+    $font-Flaticon-shopping-cart: "\f100";
+    $font-Flaticon-arrow-angle-pointing-to-left: "\f101";
+    $font-Flaticon-right-arrow-angle: "\f102";
+    $font-Flaticon-musica-searcher: "\f103";
+    $font-Flaticon-star-1: "\f104";
+    $font-Flaticon-star: "\f105";
+    $font-Flaticon-youtube-logotype: "\f106";
+    $font-Flaticon-facebook-logo-button: "\f107";
+    $font-Flaticon-twitter-logo-button: "\f108";
+    $font-Flaticon-sort-down: "\f109";
+    $font-Flaticon-comment-white-oval-bubble: "\f10a";
+    $font-Flaticon-github: "\f10b";
+    $font-Flaticon-facebook-letter-logo: "\f10c";
+    $font-Flaticon-facebook-logo-in-circular-button-outlined-social-symbol: "\f10d";
+    $font-Flaticon-twitter-circular-button: "\f10e";
+    $font-Flaticon-share: "\f10f";
+    $font-Flaticon-twitter-logo-silhouette: "\f110";
+    $font-Flaticon-envelope: "\f111";
+    $font-Flaticon-sold-real-estate-hanging-signal: "\f112";
+    $font-Flaticon-like: "\f113";
+    $font-Flaticon-eye: "\f114";

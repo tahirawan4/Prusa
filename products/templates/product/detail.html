@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/rating.css' %}">
+    <div class="container">
+        <div class="productDetailPage">
+            <div class="productTop">
+                <div class="row">
+
+
+                    <div class="col-lg-7 col-md-6">
+                        <div class="proDetailSliderWrap">
+                            <div class="proDetailSlider">
+
+                                {% for image in product.productimage_set.all %}
+                                    <div class="slide">
+                                        <div class="imgWrap">
+                                            <img src="{{ image.image.url }}" alt="" height=""
+                                                 width="">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                            <div class="proDetailSliderNav">
+                                {% for image in product.productimage_set.all %}
+                                    <div class="slide">
+                                        <div class="imgWrap">
+                                            <img src="{{ image.image.url }}" alt="" height=""
+                                                 width="">
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-6">
+                        <div class="proInfo">
+                            <div class="row">
+
+                            </div>
+                            <div class="rating">
+                                {% for i in range %}
+                                    {% if forloop.counter <= product.average_ratings %}
+                                        <i class="star flaticon-star-1"></i>
+                                    {% else %}
+                                        <i class="star flaticon-star"></i>
+                                    {% endif %}
+                                {% endfor %}
+
+                                <p class="starCount">({{ product.rating_set.all.count }})</p>
+                            </div>
+                            <h6>{{ product.name }}</h6>
+                            <p>{{ product.description }}</p>
+                            <p class="price">${{ product.price }}</p>
+                            <p class="stock">
+                                {% if product.available %}
+                                    <form action="{% url "cart:cart_add" product.id %}" method="post">
+                                        {% csrf_token %}
+                                        {{ cart_product_form|crispy }}
+                                        <button type="submit" class="btn btn-primary">Add to cart</button>
+                                    </form>
+
+                                {% else %}Out of Stock{% endif %}
+                            </p>
+
+                            <div class="proSocialIcons">
+                                <a href="#" class="flaticon-facebook-letter-logo"></a>
+                                <a href="#" class=" flaticon-twitter-logo-silhouette"></a>
+                                <a href="#" class="flaticon-envelope"></a>
+                                <a href="#" class="flaticon-share"></a>
+                                <span>Share</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="proRatingInfo">
+                <p><span>{% if user.is_authenticated %}<a href="{{ product.get_like_url }}">Like</a>{% else %}
+                    Likes{% endif %}</span> ({{ product.total_likes }})</p>
+                <p><span>Products Sold</span>({{ product.total_items_sold }})</p>
+                <p><span>Views</span>({{ product.total_views }})</p>
+            </div>
+            <div class="proTabs">
+                <ul class="nav nav-tabs">
+                    {% for content in product.customcontent_set.all %}
+                        <li><a {% if forloop.counter0 == 0 %}class="active show"{% endif %} data-toggle="tab"
+                               href="#tab-{{ content.id }}">{{ content.title }}</a></li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content" style="margin-left: 20px;">
+
+                    {% for content in product.customcontent_set.all %}
+                        <div id="tab-{{ content.id }}"
+                             class="tab-pane fade {% if forloop.counter0 == 0 %}active show{% endif %}">
+                            {{ content.content|safe }}
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="proRelated">
+                <h6 class="title">Related Products</h6>
+                <div class="proSlider">
+                    {% for prod in related_items %}
+                        <div class="slide ">
+                            <a href="{{ prod.get_absolute_url }}" class="products">
+                                <img src="{{ prod.image.url }}" width="262" height="173" alt="product">
+                                <div class="slideCont">
+                                    <div class="slideInnerCont">
+                                        <div class="slideContText">
+                                            <h6>{{ prod.name }}</h6>
+                                            <p>{{ prod.description|truncatechars:80 }} </p>
+                                        </div>
+                                        {#                                        <div class="slideContArrows">#}
+                                        {#                                            <button class="btn fa fa-caret-up"></button>#}
+                                        {#                                            <p>50</p>#}
+                                        {#                                            <button class="btn fa fa-caret-down"></button>#}
+                                        {#                                        </div>#}
+                                    </div>
+                                    <p class="price">${{ prod.price }}</p>
+                                    <div class="rating">
+                                        {% for i in range %}
+                                            {% if forloop.counter <= prod.average_ratings %}
+                                                <i class="star flaticon-star-1"></i>
+                                            {% else %}
+                                                <i class="star flaticon-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        <p class="starCount">({{ prod.rating_set.all.count }})</p>
+                                    </div>
+                                </div>
+
+                                {% if prod.available %}
+                                    <form action="{% url "cart:cart_add" prod.id %}" method="post">
+                                        {% csrf_token %}
+                                        <div hidden>
+                                            {{ cart_product_form|crispy }}
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Add to cart</button>
+                                    </form>
+                                {% else %}
+                                    <button type="button" class="btn btn-primary">Out of Stock</button>
+                                {% endif %}
+                                <span class="search"></span>
+                            </a>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+
+            <div class="input_comment">
+
+                <form method="post" action="{{ product.get_rate_url }}">
+                    {% csrf_token %}
+                    <textarea name="comment" placeholder="Please Rate Us" required class="form-control"></textarea>
+
+                    <br>
+                    <br>
+
+
+                    <div>
+                        {% if not user_product_rate %}
+                            <fieldset class="rating-new">
+                                <input type="radio" id="star5" name="rating"
+                                       value="5"/><label
+                                    class="full"
+                                    for="star5"
+                                    title="Awesome - 5 stars"></label>
+                                <input type="radio" id="star4half" name="rating"
+                                       value="5"/><label class="half"
+                                                         for="star4half"
+                                                         title="Pretty good - 4.5 stars"></label>
+                                <input type="radio" id="star4" name="rating"
+                                       value="4"/><label
+                                    class="full"
+                                    for="star4"
+                                    title="Pretty good - 4 stars"></label>
+                                <input type="radio" id="star3half" name="rating"
+                                       value="4"><label class="half"
+                                                        for="star3half"
+                                                        title="Meh - 3.5 stars"></label>
+                                <input type="radio" id="star3" name="rating"
+                                       value="3"/><label
+                                    class="full"
+                                    for="star3"
+                                    title="Meh - 3 stars"></label>
+                                <input type="radio" id="star2half" name="rating"
+                                       value="3"/><label class="half"
+                                                         for="star2half"
+                                                         title="Kinda bad - 2.5 stars"></label>
+                                <input type="radio" id="star2" name="rating"
+                                       value="2"/><label
+                                    class="full"
+                                    for="star2"
+                                    title="Kinda bad - 2 stars"></label>
+                                <input type="radio" id="star1half" name="rating"
+                                       value="2"/><label class="half"
+                                                         for="star1half"
+                                                         title="Meh - 1.5 stars"></label>
+                                <input type="radio" id="star1" name="rating"
+                                       value="1"/><label
+                                    class="full"
+                                    for="star1"
+                                    title="Sucks big time - 1 star"></label>
+                                <input type="radio" id="starhalf" name="rating"
+                                       value="1"/><label
+                                    class="half" for="starhalf"
+                                    title="Sucks big time - 0.5 stars"></label>
+                            </fieldset>
+                        {% endif %}
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-danger">Post</button>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+
+
+            <div class="proReviews">
+                <h6 class="title">Reviews</h6>
+                {% for rate in product.rating_set.all %}
+                    <div class="singleReview">
+                        <div class="imgWrap">
+                            <img src="{% static 'images/dp1.jpg' %}" width="" height="" alt="">
+                        </div>
+                        <div class="review">
+                            <p class="name">Julia</p>
+                            <p>{{ rate.message }}</p>
+                            <div class="rating">
+                                {% for i in range %}
+                                    {% if forloop.counter <= rate.rate %}
+                                        <i class="star flaticon-star-1"></i>
+                                    {% else %}
+                                        <i class="star flaticon-star"></i>
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
