@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load form_extras %}
+
 {% block content %}
     <div class="container">
         <div class="communityPage">
@@ -22,53 +24,124 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <a href="#" class="reply btn btn-secondary"><i class="fa fa-edit"></i>Reply</a>
+                        <button type="button" class="reply btn btn-secondary" data-toggle="modal"
+                                data-target="#comment-modal">
+                            <i class="fa fa-edit"></i>Reply
+                        </button>
+
+
                     </div>
                 </div>
             </div>
-            <span class="answer">5 Answers</span>
-            <div class="commWrap ans">
-                <div class="community">
-                    <div class="left">
-                        <div class="imgWrap">
-                            <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
-                        </div>
-                        <button class="link share"><i class="fa fa-share-square"></i>Share</button>
-                        <button class="link improve"><i class="fa fa-wrench"></i>Improve</button>
-                    </div>
-                    <div class="commCont">
-                        <h6>Help with Camera zoom visual aid for the visually impaired</h6>
-                        <p class="time">Asked by <span class="name">Monika Dykas</span> on Jan 18, 2019 <span
-                                class="post"> 25 posts</span></p>
-                        <p>I am currently working on a school project where i am making a visual aid for people with
-                            visual impairments with the raspberry pi. I have done lots of research, but unfortunately
-                            cannot find a way to do what i want to do. I am new to the Pi and was wondering if there was
-                            a way(and if so, how) to make a remote controller for the Point Gray Chameleon3 camera(if
-                            this camera doesn't work then can you tell me which one will) so when i press a button it
-                            zooms in with optical zoom, and press another button and it zooms out. If you could help me
-                            with this, i would very much appreciate it.</p>
-                    </div>
-                    <div class="right">
-                        <a href="#" class="reply btn btn-secondary"><i class="fa fa-edit"></i>Reply</a>
-                        <div class="slideContArrows">
-                            <button class="btn fa fa-caret-up"></button>
-                            <p>50</p>
-                            <button class="btn fa fa-caret-down"></button>
+            <span class="answer">{{ post.topicanswer_set.all.count }} Answers</span>
+
+
+            {% for answer in post.topicanswer_set.all %}
+
+
+                <div class="modal" id="comment-modal-answer-{{ answer.id }}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <form action="{% url 'topic-post-answer-comment' slug=post.slug id=answer.id %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="comment">Comment:</label>
+                                        <textarea class="form-control" rows="5" id="content" name="content"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary">Submit</button>
+                                </form>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
-                <div class="community">
-                    <div class="imgWrap">
-                        <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+
+
+                <div class="commWrap ans">
+                    <div class="community">
+                        <div class="left">
+                            <div class="imgWrap">
+                                <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+                            </div>
+                            {#                            <button class="link share"><i class="fa fa-share-square"></i>Share</button>#}
+                            {#                            <button class="link improve"><i class="fa fa-wrench"></i>Improve</button>#}
+                        </div>
+                        <div class="commCont">
+                            <h6>{{ post.title }}</h6>
+                            <p class="time">Answered by <span class="name">{{ answer.user.first_name }}</span>
+                                on {{ answer.created_at|date }} <span
+                                        class="post"> {{ answer.user.topicposts_set.all.count }} posts</span></p>
+                            <p>{{ answer.content }}</p>
+                        </div>
+                        <div class="right">
+                            <button type="button" class="reply btn btn-secondary" data-toggle="modal"
+                                    data-target="#comment-modal-answer-{{ answer.id }}">
+                                <i class="fa fa-edit"></i>Reply
+                            </button>
+                            <div class="slideContArrows">
+                                {% get_something answer user.id as can_vote %}
+
+                                {% if can_vote == 1 %}
+                                    <button style="color: green;" href="{{ answer.up_vote_url }}"
+                                            class="btn fa fa-caret-up"></button>
+                                {% elif can_vote != 1 or can_vote == None %}
+                                    <a href="{{ answer.up_vote_url }}" class="btn fa fa-caret-up"></a>
+                                {% endif %}
+                                <p>{{ answer.total_votes }}</p>
+                                {% if can_vote == -1 %}
+                                    <button class="btn fa fa-caret-down" style="color: red;"></button>
+                                {% elif can_vote != -1 or can_vote == None %}
+                                    <a href="{{ answer.down_vote_url }}" class="btn fa fa-caret-down"></a>
+                                {% endif %}
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="commCont">
-                        <p class="time">Asked by <span class="name">Monika Dykas</span> on Jan 18, 2019 </p>
-                        <p>I am currently working on a school project where i am making a visual aid for people with
-                            visual impairments with the raspberry pi. I have done lots of research, but unfortunately
-                            cannot find a way to do what i want to do. </p>
-                    </div>
-                    <a href="#" class="addCom">Add Comment</a>
+
+                    {% for answer_comment in answer.topicanswercomment_set.all %}
+                        <div class="community">
+                            <div class="imgWrap">
+                                <img src="{% static 'images/dp.jpg' %}" height="" width="" alt="dp">
+                            </div>
+                            <div class="commCont">
+                                <p class="time">Answerd by <span
+                                        class="name">{{ answer_comment.user.first_name }}</span>
+                                    on {{ answer_comment.created_at|date }}</p>
+                                <p>{{ answer_comment.content }} </p>
+                            </div>
+                        </div>
+                    {% endfor %}
+
                 </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    <!-- Button to Open the Modal -->
+
+    <!-- The Modal -->
+    <div class="modal" id="comment-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <form action="{% url 'topic-post-answer' slug=post.slug %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" rows="5" id="content" name="content"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Submit</button>
+                    </form>
+                </div>
+
+
             </div>
         </div>
     </div>

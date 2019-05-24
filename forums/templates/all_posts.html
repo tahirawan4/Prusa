@@ -19,7 +19,7 @@
                         <tr>
                             <td>
                                 <div class="communityF"><span class="chatIcon"></span>
-                                    <p><a href="{% url 'post-details' slug=post.slug %}">{{ post.title }}</a></p></div>
+                                    <p><a href="{% url 'topic-post-details' slug=post.slug %}">{{ post.title }}</a></p></div>
                             </td>
                             <td>{{ post.topicanswer_set.all.count }}</td>
                             <td>
