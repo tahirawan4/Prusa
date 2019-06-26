@@ -30,7 +30,10 @@
 
                     <li><a href="{% url 'posts' %}">Blog</a></li>
                     <li><a href="{% url 'forums' %}">Forum</a></li>
-                    <li><a href="#">My Account</a></li>
+{#                    {% if user.is_authenticated %}#}
+{#                        <li><a href="#">My Account</a></li>#}
+{#                    {% endif %}#}
+
                 </ul>
 
                 {% with totail_items=cart|length %}
@@ -46,7 +49,7 @@
                         </div>
                     {% else %}
                         <div class="cart">
-                            <a href="{% url "cart:cart_detail" %}" class="flaticon-shopping-cart"></a>
+                            <a href="#" class="flaticon-shopping-cart"></a>
                             <div class="notify">0</div>
                         </div>
                     {% endif %}
@@ -84,6 +87,8 @@
     </div>
 </header>
 <main>
+
+<!-- templates/home.html -->
     {% block content %}
     {% endblock %}
 </main>

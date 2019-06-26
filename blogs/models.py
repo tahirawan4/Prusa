@@ -1,6 +1,6 @@
 from autoslug import AutoSlugField
 from ckeditor_uploader.fields import RichTextUploadingField
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 
@@ -25,7 +25,7 @@ class Post(BaseModel):
     title = models.CharField(max_length=200)
     content = RichTextUploadingField()
     categories = models.ManyToManyField(BlogCatrgeory)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     main_image = models.ImageField()
     slug = AutoSlugField(populate_from='title')
 
@@ -34,7 +34,7 @@ class Post(BaseModel):
 
 
 class BlogComment(BaseModel):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.TextField(default='')
 

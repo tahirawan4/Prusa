@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
 from django.urls import reverse
-
+from django.conf import settings
 
 # from orders.models import Order, OrderItem
 
@@ -86,7 +86,7 @@ class ProductImage(models.Model):
 
 class ProductLike(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like = models.BooleanField(default=True)
 
     def __str__(self):
@@ -109,7 +109,7 @@ class Rating(models.Model):
         (COMMENT, 'Comment'),
         (RATE, 'Rate')
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     message = models.TextField()
     rate_type = models.CharField(choices=RATE_TYPE, default=RATE, max_length=20)

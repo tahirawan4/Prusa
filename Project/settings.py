@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles', 'accounts', 'blogs', 'forums', 'ckeditor', 'ckeditor_uploader', 'products', 'orders',
-    'cart','crispy_forms',
+    'cart', 'crispy_forms', 'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -166,3 +166,9 @@ CKEDITOR_CONFIGS = {
 CART_SESSION_ID = 'cart'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# settings.py
+STRIPE_SECRET_KEY = 'sk_test_23UGX6WDMBlGkesKm6WkL3D500KxAKmLct'
+STRIPE_PUBLISHABLE_KEY = 'pk_test_lNFIsDpDUOv5aF4o9tFU4ixD00KB6Ys8RW'
+
+AUTH_USER_MODEL = 'accounts.User'

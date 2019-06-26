@@ -4,6 +4,8 @@ from django.db import models
 from django.db.models import Sum
 from django.urls import reverse
 
+from django.conf import settings
+
 
 class BaseModel(models.Model):
     is_active = models.BooleanField(default=False)
@@ -33,7 +35,7 @@ class Topic(BaseModel):
     title = models.CharField(max_length=500)
     category = models.ForeignKey(ForumCategory, on_delete=models.CASCADE)
     content = models.TextField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = AutoSlugField(populate_from='title')
 
     @property
@@ -47,7 +49,7 @@ class Topic(BaseModel):
 class TopicPosts(BaseModel):
     title = models.CharField(max_length=500)
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag)
     content = models.TextField()
     slug = AutoSlugField(populate_from='title', default='test-slug')
@@ -58,7 +60,7 @@ class TopicPosts(BaseModel):
 
 class TopicAnswer(BaseModel):
     topic_post = models.ForeignKey(TopicPosts, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
 
     def can_vote(self, user_id):
@@ -83,7 +85,7 @@ class TopicAnswer(BaseModel):
 class TopicVote(BaseModel):
     topic_answer = models.ForeignKey(TopicAnswer, on_delete=models.CASCADE)
     vote = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id)
@@ -91,7 +93,7 @@ class TopicVote(BaseModel):
 
 class TopicAnswerComment(BaseModel):
     topic_answer = models.ForeignKey(TopicAnswer, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.TextField()
 
     def __str__(self):
