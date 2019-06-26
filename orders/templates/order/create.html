@@ -29,15 +29,6 @@
 
                     <li class="list-group-item active">Total Cost: ${{ cart.get_total_price }}</li>
 
-                    <br>
-                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                            data-key="{{ key }}"
-                            data-description="A Django Charge"
-                            data-amount="{{ cart.get_total_price_for_card }}"
-                            data-locale="auto">
-                    </script>
-
-
                 </ul>
 
             </div>
